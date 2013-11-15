@@ -31,7 +31,12 @@ public class Client extends JFrame
     private ObjectOutputStream toServer;
     private ObjectInputStream  fromServer;
 
-    private static int port = 4000;
+    /*
+    Plan to update the port selection to use a showInputDialog that will request a user
+    specified port and url of the server to connect to.
+    Like the other showInputDialogs, this will have a server address and port preset.
+     */
+    private static final int port = 4000;
 
     String  date;
     boolean connected;

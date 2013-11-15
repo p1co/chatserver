@@ -138,11 +138,15 @@ public class ChatServer extends JFrame
 
                 writers.add( outputToClient );
 
-                // receive the username from the client for online userlist
+                /*
+                this section gets the username from the client, and adds the username
+                to the online list hash of users connected
+
+                sure, could have just sent a string instead of an object, this
+                seemed more fun for now
+                 */
                 Message userNameToSave = ( Message ) inputFromClient.readObject();
-
                 userName = userNameToSave.getUserName();
-
                 onlineList.add( userName );
 
                 pushThis( userName + " has connected to the server." );

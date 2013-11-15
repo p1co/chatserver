@@ -30,6 +30,7 @@ class Message implements Serializable
         this.userName = userName;
     }
 
+    // this constructor is used to send the initial username to the server for the online list
     Message( String userName )
     {
         this.userName = userName;
