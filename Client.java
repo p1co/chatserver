@@ -20,9 +20,11 @@ public class Client extends JFrame
         The font-related settings will be adjustable via the ClientGUI controls.
     */
     private static String userName;  // this field will be changed when user is prompted for a name
-    private static int    fontSize = 12;
-    private static String fontType = "Serif";
-    private static Color fontColour = Color.DARK_GRAY;
+    private static int    fontSize   = 12;
+    private static String fontType   = "Serif";
+    private static Color  fontColour = Color.DARK_GRAY;
+    private static int    fontStyle  = Font.BOLD;
+    private static Font   myFont;
 
     private JTextField userInput  = new JTextField(); // Text field for receiving message
     private JTextArea  userOutput = new JTextArea();  // Text area to display messages
@@ -42,7 +44,7 @@ public class Client extends JFrame
     boolean connected;
     JPanel p = null;
 
-    Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
+    // static Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
 
     Message wantToSend;
 
@@ -66,7 +68,7 @@ public class Client extends JFrame
         a long  horizontal scroll bar will be automagically used
         */
         userOutput.setLineWrap( true );
-        userOutput.setFont(myFont);
+        userOutput.setFont( myFont );
 
         // the following code will be replaced when our JavaFX ClientGUI is finished
         setLayout( new BorderLayout() );
@@ -107,9 +109,11 @@ public class Client extends JFrame
             {
                 // make the date look pretty: 8:54:17 PM
                 date = getTimeInstance( MEDIUM ).format( new Date() );
-                userOutput.setForeground( fontColour );
 
                 receiveMessage = ( Message ) fromServer.readObject();
+
+                userOutput.setForeground( receiveMessage.getFontColour() );
+                userOutput.setFont( receiveMessage.getMyFont() );
 
                 if( receiveMessage != null )
                 {
@@ -184,6 +188,16 @@ public class Client extends JFrame
         this.fontColour = fontColour;
     }
 
+    public static Font getMyFont()
+    {
+        return myFont;
+    }
+
+    public static void setMyFont( String fontType, int fontStyle, int fontSize )
+    {
+        Client.myFont = new Font( fontType, fontStyle, fontSize );
+    }
+
     /**
      * Prompt for and return the desired screen name.
      */
@@ -206,6 +220,8 @@ public class Client extends JFrame
         @Override
         public void actionPerformed( ActionEvent e )
         {
+            setMyFont( fontType, fontStyle, fontSize );
+
             try
             {
                 /*
@@ -215,8 +231,7 @@ public class Client extends JFrame
                     This object will be modified to use the font class when we get time to implement it.
                 */
                 wantToSend = new Message( userInput.getText().trim(),
-                        Client.getFontSize(),
-                        Client.getFontType(),
+                        Client.getMyFont(),
                         Client.getFontColour(),
                         Client.getUserName() );
 

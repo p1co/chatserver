@@ -9,10 +9,10 @@ import java.io.Serializable;
 class Message implements Serializable
 {
     private String msgBody;
-    private int    fontSize;
-    private String fontType;
-    private Color fontColour;
-    private String userName;
+    private Font   myFont;
+    private Color  fontColour;
+    private String fromUserName;
+    private String toUserName;
 
     /*                             _                           _
                                   | |                         | |
@@ -21,25 +21,51 @@ class Message implements Serializable
      | (__  | (_) | | | | | \__ \ | |_  | |    | |_| | | (__  | |_  | (_) | | |
       \___|  \___/  |_| |_| |___/  \__| |_|     \__,_|  \___|  \__|  \___/  |_|
     */
-    Message( String msgBody, int fontSize, String fontType, Color fontColour, String userName )
-    {
-        this.msgBody = msgBody;
-        this.fontSize = fontSize;
-        this.fontType = fontType;
-        this.fontColour = fontColour;
-        this.userName = userName;
-    }
 
-    // this constructor is used to send the initial username to the server for the online list
+    /*
+    this constructor is used to send the initial
+    username to the server for the online list
+     */
     Message( String userName )
     {
-        this.userName = userName;
+        this.fromUserName = userName;
     }
 
+    /*
+    this constructor is used by the server to let the
+    whole room know a client has disconnected
+     */
     Message( String userName, String allOfThisTest )
     {
         this.msgBody = userName + " " + allOfThisTest;
     }
+
+    /*
+    this constructor is used for all chat messages a user
+     sends that are not private
+     */
+    Message( String msgBody, Font myFont, Color fontColour, String userName )
+    {
+        this.msgBody = msgBody;
+        this.myFont = myFont;
+        this.fontColour = fontColour;
+        this.fromUserName = userName;
+    }
+
+    /*
+    this constructor is used when a private message is
+     requested (feature needs to be implemented)
+     */
+    Message( String msgBody, Font myFont, Color fontColour, String fromUserName, String toUserName )
+    {
+        this.msgBody = msgBody;
+        this.myFont = myFont;
+        this.fontColour = fontColour;
+        this.fromUserName = fromUserName;
+        this.toUserName = toUserName;
+    }
+
+
 
     /*               _     _                                                   _     _
                     | |   | |                           ___                   | |   | |
@@ -58,7 +84,7 @@ class Message implements Serializable
 
     String getUserName()
     {
-        return userName;
+        return fromUserName;
     }
 
     Color getFontColour()
@@ -66,23 +92,16 @@ class Message implements Serializable
         return fontColour;
     }
 
-    String getFontType()
+    Font getMyFont()
     {
-        return fontType;
-    }
-
-    int getFontSize()
-    {
-        return fontSize;
+        return myFont;
     }
 
     @Override
     public String toString()
     {
         return super.toString() + msgBody + " "
-                + fontSize + " "
-                + fontType + " "
                 + fontColour + " "
-                + userName + " ";
+                + fromUserName + " ";
     }
 }
