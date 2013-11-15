@@ -178,11 +178,16 @@ public class Client extends JFrame
      */
     public String getName()
     {
-        return JOptionPane.showInputDialog(
+        // the random generator is for testing purposes, i didn't want to keep having
+        // to type in usernames to test features
+        return ( String ) JOptionPane.showInputDialog(
                 p,
                 "Choose a name:",
                 "Screen name selection",
-                JOptionPane.PLAIN_MESSAGE );
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                "moose" + (int)( Math.random() * ( 9999 - 1111 ) ) );
     }
 
     private class Listener implements ActionListener
