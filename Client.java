@@ -20,8 +20,8 @@ public class Client extends JFrame
         The font-related settings will be adjustable via the ClientGUI controls.
     */
     private static String userName;  // this field will be changed when user is prompted for a name
-    private static int    fontSize   = 12;
-    private static String fontType   = "Serif";
+    private static int    fontSize = 12;
+    private static String fontType = "Serif";
     private static Color fontColour = Color.DARK_GRAY;
 
     private JTextField userInput  = new JTextField(); // Text field for receiving message
@@ -31,11 +31,15 @@ public class Client extends JFrame
     private ObjectOutputStream toServer;
     private ObjectInputStream  fromServer;
 
+    private static int port = 4000;
+
     String  date;
     boolean connected;
     JPanel p = null;
 
-    Font myFont = new Font( fontType, Font.BOLD, fontSize); // testing the font functionality // works!
+    Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
+
+    Message wantToSend;
 
     public static void main( String[] args ) throws IOException
     {
@@ -64,6 +68,7 @@ public class Client extends JFrame
         add( p, NORTH );
         add( new JScrollPane( userOutput ), CENTER );
 
+        // listens for when the user sends a message
         userInput.addActionListener( new Listener() );
 
         setTitle( "__chatclient__" ); // woo! thats us!!
@@ -73,7 +78,6 @@ public class Client extends JFrame
         setVisible( true );
 
         String hostname = "localhost";
-        int port = 9004;
 
         Socket socket = new Socket( hostname, port );
 
@@ -85,7 +89,9 @@ public class Client extends JFrame
 
         // send the username to the server for "online list"
         // ** feature is beta right now **
-        toServer.writeObject( userName );
+
+        wantToSend = new Message( userName );
+        toServer.writeObject( wantToSend );
 
         Message receiveMessage;
 
@@ -192,8 +198,6 @@ public class Client extends JFrame
 
     private class Listener implements ActionListener
     {
-        Message wantToSend;
-
         @Override
         public void actionPerformed( ActionEvent e )
         {

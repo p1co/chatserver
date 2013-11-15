@@ -10,10 +10,11 @@ import java.util.HashSet;
 import static java.awt.BorderLayout.*;
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.getTimeInstance;
+import static javax.swing.JOptionPane.*;
 
 public class ChatServer extends JFrame
 {
-    private static final int PORT = 9004;
+    private static String port;
 
     // this hash will keep a list of users, the .LIST command will
     // access the list
@@ -23,7 +24,7 @@ public class ChatServer extends JFrame
     // user, purpose for this is to send a message to every connected client (echo)
     private static HashSet<ObjectOutputStream> writers = new HashSet<ObjectOutputStream>();
 
-    private static JTextArea                   log;
+    private static JTextArea log;
 
     // start the user count at 1
     static int clientNo = 1;
@@ -38,6 +39,19 @@ public class ChatServer extends JFrame
         log.setBackground( Color.DARK_GRAY );
         log.setForeground( Color.LIGHT_GRAY );
 
+        /*
+        when the server loads, it requests a port
+        a random port outside the reserved ports range is preselected
+         */
+        port = ( String ) showInputDialog(
+                this,
+                "Choose a port:",
+                "Port selection",
+                PLAIN_MESSAGE,
+                null,
+                null,
+                ( int ) ( Math.random() * ( 65535 - 1025 ) ) );
+
         setTitle( "ChatNinjas server log" );
         setSize( 394, 200 );
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -50,12 +64,12 @@ public class ChatServer extends JFrame
 
         System.out.println( "The chat server is running." );
 
-        ServerSocket listener = new ServerSocket( PORT );
+        ServerSocket listener = new ServerSocket( Integer.valueOf( port ) );
 
         // make the date look pretty: 8:54:17 PM
         date = getTimeInstance( MEDIUM ).format( new Date() );
 
-        pushThis( "MultiThreadServer started." );
+        pushThis( "MultiThreadServer started on port " + port );
 
         InetAddress userAddress;
 
@@ -125,7 +139,9 @@ public class ChatServer extends JFrame
                 writers.add( outputToClient );
 
                 // receive the username from the client for online userlist
-                userName = (String) inputFromClient.readObject();
+                Message userNameToSave = ( Message ) inputFromClient.readObject();
+
+                userName = userNameToSave.getUserName();
 
                 onlineList.add( userName );
 
