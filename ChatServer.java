@@ -50,7 +50,7 @@ public class ChatServer extends JFrame
                 PLAIN_MESSAGE,
                 null,
                 null,
-                ( int ) ( Math.random() * ( 65535 - 1025 ) ) );
+                4000 );
 
         setTitle( "ChatNinjas server log" );
         setSize( 394, 200 );
