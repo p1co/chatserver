@@ -36,6 +36,11 @@ class Message implements Serializable
         this.userName = userName;
     }
 
+    Message( String userName, String allOfThisTest )
+    {
+        this.msgBody = userName + " " + allOfThisTest;
+    }
+
     /*               _     _                                                   _     _
                     | |   | |                           ___                   | |   | |
        __ _    ___  | |_  | |_    ___   _ __   ___     ( _ )      ___    ___  | |_  | |_    ___   _ __   ___

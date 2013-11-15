@@ -133,8 +133,8 @@ public class ChatServer extends JFrame
             try
             {
                 // Create character streams for the socket.
-                inputFromClient = new ObjectInputStream( socket.getInputStream() );
-                outputToClient = new ObjectOutputStream( socket.getOutputStream() );
+                inputFromClient = new ObjectInputStream(  socket.getInputStream()  );
+                outputToClient  = new ObjectOutputStream( socket.getOutputStream() );
 
                 writers.add( outputToClient );
 
@@ -177,7 +177,9 @@ public class ChatServer extends JFrame
                     {
                         pushThis( "Quit request made by " + echoedMessage.getUserName() );
 
-                        // quit code will go here, such as remove user from online list
+                        // this removes the username from the online list
+                        sendMessageToAll( echoedMessage.getUserName(), " has left chat.");
+                        onlineList.remove( echoedMessage.getUserName() );
                         break;
                     }
 
@@ -233,5 +235,16 @@ public class ChatServer extends JFrame
 
         // automagically scrolls to the button
         log.setCaretPosition(log.getDocument().getLength());
+    }
+
+    public static void sendMessageToAll( String user, String displayThis ) throws IOException
+    {
+        Message sendThisMessageToAllConnected = new Message( user, displayThis );
+
+        for( ObjectOutputStream writer : writers )
+        {
+            writer.writeObject( sendThisMessageToAllConnected );
+            writer.flush();
+        }
     }
 }
