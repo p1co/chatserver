@@ -45,10 +45,9 @@ public class NinjaController implements Initializable
             @Override
             public void handle( ActionEvent actionEvent )
             {
-                //userOutput.append( "\ntest1" );
-                String tempCopy = userInput.getText().trim();
+                userOutput.append( "\ntest1" );
 
-                System.out.println( tempCopy );
+                System.out.println( actionEvent );
             }
         } );
 
@@ -57,8 +56,8 @@ public class NinjaController implements Initializable
             @Override
             public void actionPerformed( java.awt.event.ActionEvent actionEvent )
             {
-                String cmd = actionEvent.toString();
-                System.out.println("CMD IN ECHO LISTENER = " + cmd);
+                // String cmd = actionEvent.getActionCommand();
+                System.out.println("CMD IN ECHO LISTENER = " + actionEvent);
             }
         });
     }
