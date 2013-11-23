@@ -2,7 +2,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * @author Sergey 
+ * @author Sergey
  *         Date: 10/29/13 Time: 12:17 AM
  */
 

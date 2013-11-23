@@ -8,11 +8,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Date;
 
-import static java.awt.BorderLayout.*;
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.WEST;
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.getTimeInstance;
 
-public class Client extends JFrame
+public class Client
 {
     /*
         These are the user set preferences, the userName will be set by the user
@@ -24,7 +25,7 @@ public class Client extends JFrame
     private static String fontType   = "Serif";
     private static Color  fontColour = Color.DARK_GRAY;
     private static int    fontStyle  = Font.BOLD;
-    private static Font   myFont;
+    private static Font myFont;
 
     private JTextField userInput  = new JTextField(); // Text field for receiving message
     private JTextArea  userOutput = new JTextArea();  // Text area to display messages
@@ -48,12 +49,6 @@ public class Client extends JFrame
 
     Message wantToSend;
 
-    public static void main( String[] args ) throws IOException
-    {
-        new Client();
-    }
-
-    //ignore this comment
     public Client() throws IOException
     {
         // Panel p to hold the label and text field
@@ -71,19 +66,23 @@ public class Client extends JFrame
         userOutput.setFont( myFont );
 
         // the following code will be replaced when our JavaFX ClientGUI is finished
+
+        /*
+
+
         setLayout( new BorderLayout() );
         add( p, NORTH );
         add( new JScrollPane( userOutput ), CENTER );
-
+            */
         // listens for when the user sends a message
         userInput.addActionListener( new Listener() );
-
+         /*
         setTitle( "__chatclient__" ); // woo! thats us!!
         setSize( 500, 300 );
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setLocationRelativeTo( null );
         setVisible( true );
-
+         */
         String hostname = "localhost";
 
         Socket socket = new Socket( hostname, port );
@@ -91,8 +90,8 @@ public class Client extends JFrame
         // prompt the user for an alias using JOptionPane.showInputDialog
         userName = getName();
 
-        toServer   = new ObjectOutputStream( socket.getOutputStream() );
-        fromServer = new ObjectInputStream( socket.getInputStream()  );
+        toServer = new ObjectOutputStream( socket.getOutputStream() );
+        fromServer = new ObjectInputStream( socket.getInputStream() );
 
         // send the username to the server for "online list"
         // ** feature is beta right now **
@@ -103,6 +102,7 @@ public class Client extends JFrame
         Message receiveMessage;
 
         connected = true;
+
         while( connected )
         {
             try
@@ -212,7 +212,7 @@ public class Client extends JFrame
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
-                "moose" + (int)( Math.random() * ( 9999 - 1111 ) ) );
+                "moose" + ( int ) ( Math.random() * ( 9999 - 1111 ) ) );
     }
 
     private class Listener implements ActionListener
@@ -258,7 +258,10 @@ public class Client extends JFrame
                 {
                     userInput.setText( " >>> wantToSend is null .. this message is a bug <<< " );
                 }
-                else;
+                else
+                {
+                    ;
+                }
             }
             catch( IOException ex )
             {

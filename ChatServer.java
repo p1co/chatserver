@@ -1,16 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashSet;
 
-import static java.awt.BorderLayout.*;
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.getTimeInstance;
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import static javax.swing.JOptionPane.showInputDialog;
 
 public class ChatServer extends JFrame
 {
@@ -99,7 +101,7 @@ public class ChatServer extends JFrame
 
                 pushThis( "Starting thread for client " + clientNo );
 
-                new Thread(task).start();
+                new Thread( task ).start();
 
                 clientNo++;
             }
@@ -133,8 +135,8 @@ public class ChatServer extends JFrame
             try
             {
                 // Create character streams for the socket.
-                inputFromClient = new ObjectInputStream(  socket.getInputStream()  );
-                outputToClient  = new ObjectOutputStream( socket.getOutputStream() );
+                inputFromClient = new ObjectInputStream( socket.getInputStream() );
+                outputToClient = new ObjectOutputStream( socket.getOutputStream() );
 
                 writers.add( outputToClient );
 
@@ -169,7 +171,7 @@ public class ChatServer extends JFrame
 
                         }
                         log.append( "\n" );
-                        log.setCaretPosition(log.getDocument().getLength());
+                        log.setCaretPosition( log.getDocument().getLength() );
 
                     }
 
@@ -178,7 +180,7 @@ public class ChatServer extends JFrame
                         pushThis( "Quit request made by " + echoedMessage.getUserName() );
 
                         // this removes the username from the online list
-                        sendMessageToAll( echoedMessage.getUserName(), " has left chat.");
+                        sendMessageToAll( echoedMessage.getUserName(), " has left chat." );
                         onlineList.remove( echoedMessage.getUserName() );
                         break;
                     }
@@ -234,7 +236,7 @@ public class ChatServer extends JFrame
         log.append( date + ": " + displayThis + "\n" );
 
         // automagically scrolls to the button
-        log.setCaretPosition(log.getDocument().getLength());
+        log.setCaretPosition( log.getDocument().getLength() );
     }
 
     public static void sendMessageToAll( String user, String displayThis ) throws IOException
