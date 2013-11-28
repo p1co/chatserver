@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputControl;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -19,7 +18,7 @@ import java.util.prefs.Preferences;
  *         Date: 11/22/13 Time: 2:52 AM
  */
 
-public class NinjaController extends TextInputControl implements Initializable
+public class NinjaController implements Initializable
 {
     @FXML //  fx:id="userOutput"
     public TextArea  userOutput = new TextArea();
@@ -36,11 +35,6 @@ public class NinjaController extends TextInputControl implements Initializable
 
     @FXML
     private URL location;
-
-    protected NinjaController( Content content )
-    {
-        super( content );
-    }
 
     @Override
     public void initialize( URL fxmlFileLocation, ResourceBundle resources )
