@@ -9,13 +9,13 @@
   <children>
     <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="383.0" prefWidth="600.0">
       <left>
-        <TextField id="userInput" alignment="TOP_LEFT" prefHeight="95.0" prefWidth="492.0" promptText="type stuff here" />
+        <TextField id="userInput" onAction="#onEnter" alignment="TOP_LEFT" prefHeight="95.0" prefWidth="492.0" promptText="type stuff here" />
       </left>
       <right>
         <Button fx:id="sendButton" mnemonicParsing="false" prefHeight="95.00009999999747" prefWidth="108.0" text="send" />
       </right>
       <top>
-        <TextArea id="userOutput" editable="false" prefHeight="288.0" prefWidth="357.0" wrapText="true" />
+        <TextArea id="userOutput" editable="false" prefHeight="288.0" prefWidth="357.0" promptText="" wrapText="true" />
       </top>
     </BorderPane>
   </children>

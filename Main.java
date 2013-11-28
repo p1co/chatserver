@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * @author Sergey Volkov
+ * @author Sergey
  *         Date: 11/22/13 Time: 9:10 PM
  */
 public class Main extends Application
@@ -76,9 +76,6 @@ public class Main extends Application
         return primaryStage;
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main( String[] args )
     {
         launch( args );
