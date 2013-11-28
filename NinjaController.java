@@ -12,13 +12,13 @@ import java.util.ResourceBundle;
 public class NinjaController implements Initializable
 {
     @FXML //  fx:id="userOutput"
-    static protected TextArea  userOutput = null;
+    private static TextArea userOutput;
 
     @FXML //  fx:id="userInput"
-    static protected TextField userInput  = null;
+    private static TextField userInput;
 
     @FXML //  fx:id="sendButton"
-    static protected Button    sendButton = null;
+    private Button sendButton;
 
     @FXML
     ResourceBundle resources = null;
@@ -30,43 +30,29 @@ public class NinjaController implements Initializable
     public void initialize( URL fxmlFileLocation, ResourceBundle resources )
     {
         this.resources = resources;
-        this.location  = fxmlFileLocation;
+        this.location = fxmlFileLocation;
 
-        System.out.println( "about to show the resources var: "        + resources );
+        System.out.println( "about to show the resources var: " + resources );
         System.out.println( "about to show the fxmlFileLocation var: " + fxmlFileLocation );
 
         userInput.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle( javafx.event.ActionEvent actionEvent )
+            public void handle( ActionEvent actionEvent )
             {
-                Client.sendMessageToServer( constructMessageFromFXMLuserInput() );
-                userInput.setText( "" );
-
-                System.out.println( "send via enter key" );
-
+                consolidatedSendMessagePrompt();
             }
         });
 
-        sendButton.setOnAction( new EventHandler<javafx.event.ActionEvent>()
+        sendButton.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle( javafx.event.ActionEvent actionEvent )
+            public void handle( ActionEvent actionEvent )
             {
-                Client.sendMessageToServer( constructMessageFromFXMLuserInput() );
-                userInput.setText( "" );
-
-                System.out.println( "sent via send button" );
+                consolidatedSendMessagePrompt();
             }
         } );
     }
-
-    /* dont think i need this anymore
-    public void onEnter()
-    {
-        System.out.println( "user hit enter while mouse was focused in the textfield with this message: " + userInput.getText() );
-    }
-    */
 
     // returns a String trimmed of spaces
     public static String retrieveTextFromFXMLuserInput()
@@ -75,23 +61,18 @@ public class NinjaController implements Initializable
     }
 
     // appends the incoming text area (userOut) with an inbound message
-    public static void sendMessageToFXMLuserOutput( Message incomingMessage )
+    public static void sendMessageToFXMLuserOutput( Message incomingMessage, String date )
     {
-        userOutput.appendText( incomingMessage.getMsgBody() + "\n" );
+        userOutput.appendText( date + " ["
+                             + incomingMessage.getUserName() + "]: "
+                             + incomingMessage.getMsgBody() + "\n" );
     }
 
-    public static Message constructMessageFromFXMLuserInput()
+    private void consolidatedSendMessagePrompt()
     {
-        // if the userInput field is empty, don't even bother sending the message
-        if( retrieveTextFromFXMLuserInput().equals( "" ))
-        {
-            System.out.println( "message is empty, didnt send anything" );
-            return null;
-        }
+        Client.sendMessageToServer( Client.constructMessageFromFXMLuserInput() );
+        userInput.setText( "" );
 
-        return new Message( retrieveTextFromFXMLuserInput(),
-                            null,    // font entry
-                            null,    // font entry
-                            "bob" /*getUserName()*/ );
+        System.out.println( "send via enter key" );
     }
 }

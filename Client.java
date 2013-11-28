@@ -13,13 +13,13 @@ public class Client
         These are the user set preferences, the userName will be set by the user
         when the Client loads.
     */
-    private static String userName;  // this field will be changed when user is prompted for a name
+    private static String userName = "default";  // this field will be changed when user is prompted for a name
     private static int fontSize = 12;
 
 
     // Object IO streams
     private static ObjectOutputStream toServer;
-    private ObjectInputStream  fromServer;
+    private        ObjectInputStream  fromServer;
 
     /*
     Plan to update the port selection to use a showInputDialog that will request a user
@@ -28,7 +28,7 @@ public class Client
      */
     private static final int port = 4000;
 
-    String  date;
+    static String date;
     boolean connected;
 
     // static Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
@@ -49,7 +49,7 @@ public class Client
 
         // send the username to the server for "online list"
         // ** feature is beta right now **
-        wantToSend = new Message( userName );
+        wantToSend = new Message( getName() );
         toServer.writeObject( wantToSend );
 
         Message receiveMessage;
@@ -60,9 +60,6 @@ public class Client
         {
             try
             {
-                // make the date look pretty: 8:54:17 PM
-                date = getTimeInstance( MEDIUM ).format( new Date() );
-
                 receiveMessage = ( Message ) fromServer.readObject();
 
                 if( receiveMessage != null )
@@ -112,16 +109,24 @@ public class Client
                 "moose" + ( int ) ( Math.random() * ( 9999 - 1111 ) ) );
     }
     */
-
-    public void sendMessageToController( Message sendThisToController )
+    public static String getName()
     {
-        System.out.println("--sending message to controller");
-        NinjaController.sendMessageToFXMLuserOutput( sendThisToController );
-        System.out.println("--message sent to controller");
+        return userName;
+    }
+
+    public static void sendMessageToController( Message sendThisToController )
+    {
+        // make the date look pretty: 8:54:17 PM
+        date = getTimeInstance( MEDIUM ).format( new Date() );
+
+        print( "--sending message to controller" );
+        NinjaController.sendMessageToFXMLuserOutput( sendThisToController, date );
+        print( "--message sent to controller" );
     }
 
     static void sendMessageToServer( Message messageToSend )
     {
+        sendMessageToController( new Message( 1, "test1") ); // works
         try
         {
             if( ! ( messageToSend.getMsgBody().isEmpty() ) )
@@ -144,9 +149,24 @@ public class Client
 
     }
 
-    // basic stdout print because System.out.println( "" )
-    public static void print( String printThisMessageToSystemOutPrintln )
+    public static Message constructMessageFromFXMLuserInput()
     {
-        System.out.println( printThisMessageToSystemOutPrintln );
+        // if the userInput field is empty, don't even bother sending the message
+        if( NinjaController.retrieveTextFromFXMLuserInput().equals( "" ))
+        {
+            System.out.println( "message is empty, didnt send anything" );
+            return null;
+        }
+
+        return new Message( NinjaController.retrieveTextFromFXMLuserInput(),
+                null,    // font entry
+                null,    // font entry
+                "bob" /*getUserName()*/ );
+    }
+
+    // basic stdout print because System.out.println( "" )
+    public static void print( String printThisMessageToSystemOut )
+    {
+        System.out.println( printThisMessageToSystemOut );
     }
 }

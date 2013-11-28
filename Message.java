@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 class Message implements Serializable
 {
-    private String msgBody;
+    private String msgBody = "default";
     private Font   myFont;
     private Color  fontColour;
-    private String fromUserName;
-    private String toUserName;
+    private String fromUserName = "default";
+    private String toUserName = "default";
 
     /*                             _                           _
                                   | |                         | |
@@ -32,7 +32,7 @@ class Message implements Serializable
      */
     Message( String userName )
     {
-        this.fromUserName = userName;
+        this.fromUserName = Client.getName();
     }
 
     // going to implement an int as the first argument, 1 being MESSAGE_FROM_SERVER
@@ -41,6 +41,7 @@ class Message implements Serializable
         if( type==1 )
         {
             this.msgBody = text;
+            this.fromUserName = Client.getName();
         }
     }
 
@@ -60,8 +61,8 @@ class Message implements Serializable
     Message( String msgBody, Font myFont, Color fontColour, String userName )
     {
         this.msgBody = msgBody;
-        this.myFont = myFont;
-        this.fontColour = fontColour;
+        // this.myFont = myFont;
+        // this.fontColour = fontColour;
         this.fromUserName = userName;
     }
 
