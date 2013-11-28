@@ -57,7 +57,6 @@ public class Main extends Application
             FXMLLoader loader = new FXMLLoader( Main.class.getResource( "ninja.fxml" ) );
             AnchorPane overviewPage = ( AnchorPane ) loader.load();
             rootLayout.setCenter( overviewPage );
-
         }
         catch( IOException e )
         {

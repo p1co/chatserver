@@ -1,3 +1,8 @@
+
+
+/*
+import javafx.event.EventHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,14 +11,31 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.URL;
 import java.util.Date;
+import java.util.ResourceBundle;
 
-import static java.awt.BorderLayout.CENTER;
-import static java.awt.BorderLayout.WEST;
+
+import static java.text.DateFormat.getTimeInstance;
+*/
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.URL;
+import java.util.Date;
+import java.util.ResourceBundle;
+
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.getTimeInstance;
 
-public class Client
+public class Client extends NinjaController
 {
     /*
         These are the user set preferences, the userName will be set by the user
@@ -23,12 +45,9 @@ public class Client
     private static String userName;  // this field will be changed when user is prompted for a name
     private static int    fontSize   = 12;
     private static String fontType   = "Serif";
-    private static Color  fontColour = Color.DARK_GRAY;
-    private static int    fontStyle  = Font.BOLD;
-    private static Font myFont;
-
-    private JTextField userInput  = new JTextField(); // Text field for receiving message
-    private JTextArea  userOutput = new JTextArea();  // Text area to display messages
+    private static Color  fontColour; // = Color.DARK_GRAY;
+    private static int    fontStyle;  //  = Font.BOLD;
+    private static Font   myFont;
 
     // Object IO streams
     private ObjectOutputStream toServer;
@@ -43,52 +62,20 @@ public class Client
 
     String  date;
     boolean connected;
-    JPanel p = null;
 
     // static Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
 
     Message wantToSend;
+    Message beingSentToClient;
 
     public Client() throws IOException
     {
-        // Panel p to hold the label and text field
-        p = new JPanel();
-        p.setLayout( new BorderLayout() );
-        p.add( new JLabel( "Type your message" ), WEST );
-        p.add( userInput, CENTER );
-        userInput.setHorizontalAlignment( JTextField.RIGHT );
-
-        /*
-        this line allows for text wrapping in the message display area, otherwise
-        a long  horizontal scroll bar will be automagically used
-        */
-        userOutput.setLineWrap( true );
-        userOutput.setFont( myFont );
-
-        // the following code will be replaced when our JavaFX ClientGUI is finished
-
-        /*
-
-
-        setLayout( new BorderLayout() );
-        add( p, NORTH );
-        add( new JScrollPane( userOutput ), CENTER );
-            */
-        // listens for when the user sends a message
-        userInput.addActionListener( new Listener() );
-         /*
-        setTitle( "__chatclient__" ); // woo! thats us!!
-        setSize( 500, 300 );
-        setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        setLocationRelativeTo( null );
-        setVisible( true );
-         */
         String hostname = "localhost";
 
         Socket socket = new Socket( hostname, port );
 
         // prompt the user for an alias using JOptionPane.showInputDialog
-        userName = getName();
+        userName = "bob"; //getName();
 
         toServer = new ObjectOutputStream( socket.getOutputStream() );
         fromServer = new ObjectInputStream( socket.getInputStream() );
@@ -112,12 +99,9 @@ public class Client
 
                 receiveMessage = ( Message ) fromServer.readObject();
 
-                userOutput.setForeground( receiveMessage.getFontColour() );
-                userOutput.setFont( receiveMessage.getMyFont() );
-
                 if( receiveMessage != null )
                 {
-                    userOutput.append( date                          /* displays date */
+                    userOutput.appendText( date                          /* displays date */
                             + " "                                    /* space */
                             + receiveMessage.getUserName()           /* displays username */
                             + ": "                                   /* colon and space */
@@ -127,7 +111,7 @@ public class Client
                 }
                 else
                 {
-                    userOutput.append( ">>>  Message from server==null <<<" );
+                    userOutput.appendText( ">>>  Message from server==null <<<" );
                 }
 
 
@@ -195,18 +179,22 @@ public class Client
 
     public static void setMyFont( String fontType, int fontStyle, int fontSize )
     {
-        Client.myFont = new Font( fontType, fontStyle, fontSize );
+        //Client.myFont = new Font( fontType, fontStyle, fontSize );
     }
 
     /**
      * Prompt for and return the desired screen name.
      */
+
+
+    // need to update this code with nicole's login screen functionality
+    /*
     public String getName()
     {
         // the random generator is for testing purposes, i didn't want to keep having
         // to type in usernames to test features
         return ( String ) JOptionPane.showInputDialog(
-                p,
+                null,
                 "Choose a name:",
                 "Screen name selection",
                 JOptionPane.PLAIN_MESSAGE,
@@ -214,7 +202,28 @@ public class Client
                 null,
                 "moose" + ( int ) ( Math.random() * ( 9999 - 1111 ) ) );
     }
+    */
 
+    // this class is replacing our old Listener class
+    private class handleMessage
+    {
+        public Message getMessageFromFXMLViaController()
+        {
+            return new Message( retrieveText(),
+                                //getMyFont(),
+                                //getFontColour(),
+                                getUserName() );
+        }
+
+        public void setMessagetoFXMLViaController()
+        {
+            System.out.println("--sending message to controller");
+            sendMessageToUserOutput( beingSentToClient );
+            System.out.println("--message sent to controller");
+        }
+    }
+
+    /*
     private class Listener implements ActionListener
     {
         @Override
@@ -224,12 +233,12 @@ public class Client
 
             try
             {
-                /*
-                    Upon user hitting enter in the chat client window, this grabs the String, username
-                    and font parameters
 
-                    This object will be modified to use the font class when we get time to implement it.
-                */
+                    //Upon user hitting enter in the chat client window, this grabs the String, username
+                   // and font parameters
+
+                    //This object will be modified to use the font class when we get time to implement it.
+
                 wantToSend = new Message( userInput.getText().trim(),
                         Client.getMyFont(),
                         Client.getFontColour(),
@@ -273,6 +282,50 @@ public class Client
         {
             System.out.println( printThisMessageToSystemOutPrintln );
         }
+    }
+     */
+
+    // returns a String trimmed of spaces
+    public static String retrieveText()
+    {
+        return userInput.getText().trim();
+    }
+
+    // appends the incoming text area (userOut) with an inbound message
+    public static void sendMessageToUserOutput( Message incomingMessage )
+    {
+        userOutput.appendText( incomingMessage.getMsgBody() + "\n" );
+    }
+
+    @Override
+    public void initialize( URL fxmlFileLocation, ResourceBundle resources )
+    {
+        this.resources = resources;
+        this.location = fxmlFileLocation;
+
+        System.out.println( "about to show the resources var: " + resources );
+        System.out.println( "about to show the fxmlFileLocation var: " + fxmlFileLocation );
+
+        userInput.setOnAction( new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle( javafx.event.ActionEvent actionEvent )
+            {
+                if(userInput.getText().trim().equals( "" ))
+                    return;
+
+
+            }
+        });
+
+        sendButton.setOnAction( new EventHandler<javafx.event.ActionEvent>()
+        {
+            @Override
+            public void handle( javafx.event.ActionEvent actionEvent )
+            {
+                System.out.println( "add this when userInput box functionality done" );
+            }
+        } );
     }
 
 }

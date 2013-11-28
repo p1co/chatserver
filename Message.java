@@ -22,6 +22,10 @@ class Message implements Serializable
       \___|  \___/  |_| |_| |___/  \__| |_|     \__,_|  \___|  \__|  \___/  |_|
     */
 
+    Message()
+    {
+    }
+
     /*
     this constructor is used to send the initial
     username to the server for the online list

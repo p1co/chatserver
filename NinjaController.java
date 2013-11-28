@@ -1,96 +1,37 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
-
-/**
- * @author Sergey
- *         Date: 11/22/13 Time: 2:52 AM
- */
-
-public class NinjaController implements Initializable, ActionListener
+public abstract class NinjaController implements Initializable
 {
     @FXML //  fx:id="userOutput"
-    public TextArea  userOutput = new TextArea();
+    protected static TextArea userOutput = new TextArea();
 
     @FXML //  fx:id="userInput"
-    public TextField userInput = new TextField();
-    //userInput.addActionListener( new Listener() );
+    protected static TextField userInput = new TextField();
+
+    @FXML
+    protected BorderPane ninjaborderpane;
+    protected AnchorPane ninjaanchor;
 
     @FXML //  fx:id="sendButton"
-    public Button    sendButton;
+    protected Button sendButton;
 
     @FXML
-    public ResourceBundle resources;
+    protected ResourceBundle resources;
 
     @FXML
-    private URL location;
-
-    @Override
-    public void initialize( URL fxmlFileLocation, ResourceBundle resources )
-    {
-        userInput.setText( "This is a text" );
-        this.resources = resources;
-        this.location = fxmlFileLocation;
-
-        System.out.println( "about to show the resources var: "        + resources );
-        System.out.println( "about to show the fxmlFileLocation var: " + fxmlFileLocation );
-
-        Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
-        userInput.setText(prefs.get("userInput", userInput.getText()));
-
-        userInput.addActionListener( this );
-        // sendButton.addActionListener( this );
-
-        sendButton.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( ActionEvent actionEvent )
-            {
-                userOutput.append( String.valueOf( actionEvent ) );
-
-                System.out.println( "user pressed the send button: " + actionEvent );
-            }
-        } );
-
-        // this isnt executed when i do anything in the textfield, why?
-        userInput.addActionListener( new ActionListener()
-        {
-            @Override
-            public void actionPerformed( java.awt.event.ActionEvent actionEvent )
-            {
-                // String cmd = actionEvent.getActionCommand();
-                System.out.println("CMD IN ECHO LISTENER = " + actionEvent);
-            }
-        });
-    }
+    protected URL location;
 
     public void onEnter()
     {
-        System.out.println( "user hit enter while mouse was focused in the textfield" );
-
-        // this line is to try to append the textarea with the text from the textfield *does work*
-        userOutput.append( userInput.getText().trim() );
-    }
-
-    @Override
-    public void actionPerformed( java.awt.event.ActionEvent actionEvent )
-    {
-        if(actionEvent.getSource() == sendButton )
-        {
-            System.out.println( "sendbutton" );
-        }
-
-        String text = userInput.getText();
-        System.out.println( text );
-        userInput.selectAll();
+        System.out.println( "user hit enter while mouse was focused in the textfield with this message: " + userInput.getText() );
     }
 }
