@@ -1,5 +1,3 @@
-package ninja;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,7 +16,7 @@ import java.util.prefs.Preferences;
  *         Date: 11/22/13 Time: 2:52 AM
  */
 
-public class NinjaController implements Initializable
+public class NinjaController implements Initializable, ActionListener
 {
     @FXML //  fx:id="userOutput"
     public TextArea  userOutput = new TextArea();
@@ -48,6 +46,7 @@ public class NinjaController implements Initializable
         Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
         userInput.setText(prefs.get("userInput", userInput.getText()));
 
+        userInput.addActionListener( this );
         //String tryMe = userInput.getText().trim();
         //System.out.println( tryMe );
 
@@ -80,5 +79,13 @@ public class NinjaController implements Initializable
 
         // this line is to try to append the textarea with the text from the textfield *does work*
         userOutput.append( userInput.getText().trim() );
+    }
+
+    @Override
+    public void actionPerformed( java.awt.event.ActionEvent actionEvent )
+    {
+        String text = userInput.getText();
+        System.out.println( text );
+        userInput.selectAll();
     }
 }
