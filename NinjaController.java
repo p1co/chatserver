@@ -41,14 +41,14 @@ public class NinjaController implements Initializable, ActionListener
         this.resources = resources;
         this.location = fxmlFileLocation;
 
-        System.out.println( resources );
+        System.out.println( "about to show the resources var: "        + resources );
+        System.out.println( "about to show the fxmlFileLocation var: " + fxmlFileLocation );
 
         Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
         userInput.setText(prefs.get("userInput", userInput.getText()));
 
         userInput.addActionListener( this );
-        //String tryMe = userInput.getText().trim();
-        //System.out.println( tryMe );
+        // sendButton.addActionListener( this );
 
         sendButton.setOnAction( new EventHandler<ActionEvent>()
         {
@@ -84,6 +84,11 @@ public class NinjaController implements Initializable, ActionListener
     @Override
     public void actionPerformed( java.awt.event.ActionEvent actionEvent )
     {
+        if(actionEvent.getSource() == sendButton )
+        {
+            System.out.println( "sendbutton" );
+        }
+
         String text = userInput.getText();
         System.out.println( text );
         userInput.selectAll();
