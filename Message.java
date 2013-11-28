@@ -35,6 +35,15 @@ class Message implements Serializable
         this.fromUserName = userName;
     }
 
+    // going to implement an int as the first argument, 1 being MESSAGE_FROM_SERVER
+    Message( int type, String text )
+    {
+        if( type==1 )
+        {
+            this.msgBody = text;
+        }
+    }
+
     /*
     this constructor is used by the server to let the
     whole room know a client has disconnected

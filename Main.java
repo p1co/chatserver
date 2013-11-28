@@ -30,7 +30,7 @@ public class Main extends Application
         try
         {
             // load the menubar layout from the fxml file
-            FXMLLoader loader = new FXMLLoader( Main.class.getResource( "ninjamenu.fxml" ) );
+            FXMLLoader loader = new FXMLLoader( Client.class.getResource( "ninjamenu.fxml" ) );
             rootLayout = ( BorderPane ) loader.load();
             Scene scene = new Scene( rootLayout );
             primaryStage.setScene( scene );
@@ -54,7 +54,7 @@ public class Main extends Application
         try
         {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader( Main.class.getResource( "ninja.fxml" ) );
+            FXMLLoader loader = new FXMLLoader( Client.class.getResource( "ninja.fxml" ) );
             AnchorPane overviewPage = ( AnchorPane ) loader.load();
             rootLayout.setCenter( overviewPage );
         }

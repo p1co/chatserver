@@ -5,11 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<AnchorPane fx:id="ninjaanchor" prefHeight="383.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="NinjaController">
+<AnchorPane prefHeight="383.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="NinjaController">
   <children>
-    <BorderPane fx:id="ninjaborderpane" layoutX="0.0" layoutY="0.0" prefHeight="383.0" prefWidth="600.0">
+    <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="383.0" prefWidth="600.0">
       <left>
-        <TextField fx:id="userInput" alignment="TOP_LEFT" onAction="#onEnter" prefHeight="95.0" prefWidth="492.0" promptText="type your message" />
+        <TextField fx:id="userInput" alignment="TOP_LEFT" prefHeight="95.0" prefWidth="492.0" promptText="type your message" />
       </left>
       <right>
         <Button fx:id="sendButton" mnemonicParsing="false" prefHeight="95.00009999999747" prefWidth="108.0" text="send" />
