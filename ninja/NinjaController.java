@@ -54,8 +54,8 @@ public class NinjaController extends TextInputControl implements Initializable
         Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
         userInput.setText(prefs.get("userInput", userInput.getText()));
 
-        String tryMe = userInput.getText().trim();
-        System.out.println( tryMe );
+        //String tryMe = userInput.getText().trim();
+        //System.out.println( tryMe );
 
         sendButton.setOnAction( new EventHandler<ActionEvent>()
         {
