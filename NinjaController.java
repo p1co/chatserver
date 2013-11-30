@@ -53,6 +53,8 @@ public class NinjaController implements Initializable
             }
         } );
 
+        // this little bit right here allows our client to
+        // talk to the chat server
         Client task = new Client();
         new Thread(task).start();
     }
@@ -73,7 +75,7 @@ public class NinjaController implements Initializable
 
     public static void sendMessageToFXMLuserOutput( String message, String date )
     {
-        userOutput.appendText( date + " [special message]: " + message );
+        userOutput.appendText( date + " [special message]: " + message + "\n");
     }
 
     private void consolidatedSendMessagePrompt()

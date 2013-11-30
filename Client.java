@@ -50,7 +50,7 @@ public class Client implements Runnable
         }
 
         // prompt the user for an alias using JOptionPane.showInputDialog
-        userName = "bob"; //getName(); // getName needs to be rewritten, it used the old JFrames approach, needs to use the new css approach
+        userName = "" + (int)(0 + (Math.random() * (255 - 0)))*10; //getName(); // getName needs to be rewritten, it used the old JFrames approach, needs to use the new css approach
 
         try
         {
@@ -85,17 +85,18 @@ public class Client implements Runnable
 
         while( connected )
         {
+            date = getTimeInstance( MEDIUM ).format( new Date() );
             try
             {
                 receiveMessage = ( Message ) fromServer.readObject();
 
                 if( receiveMessage != null )
                 {
-                    sendMessageToController( receiveMessage );
+                    NinjaController.sendMessageToFXMLuserOutput( receiveMessage, date );
                 }
                 else
                 {
-                    sendMessageToController( ">>>  Message from server == null <<< BUGCODE1001" );
+                    NinjaController.sendMessageToFXMLuserOutput( ">>>  Message from server == null <<< BUGCODE1001", date );
                 }
             }
             catch( ClassNotFoundException e1 )
@@ -108,36 +109,6 @@ public class Client implements Runnable
             }
         }
     }
-
-    public static void sendMessageToController( String message )
-    {
-        // make the date look pretty: 8:54:17 PM
-        date = getTimeInstance( MEDIUM ).format( new Date() );
-
-        print( "--sending message to controller" );
-        NinjaController.sendMessageToFXMLuserOutput( message, date );
-        print( "--message sent to controller" );
-    }
-
-    /*
-    public Client() throws IOException
-    {
-        String hostname = "localhost";
-
-        Socket socket = new Socket( hostname, port );
-
-        // prompt the user for an alias using JOptionPane.showInputDialog
-        userName = "bob"; //getName(); // getName needs to be rewritten, it used the old JFrames approach, needs to use the new css approach
-
-        toServer   = new ObjectOutputStream( socket.getOutputStream() );
-        fromServer = new ObjectInputStream(  socket.getInputStream() );
-
-        // send the username to the server for "online list"
-        // ** feature is beta right now **
-        wantToSend = new Message( getName() );
-        toServer.writeObject( wantToSend );
-    }
-    */
 
     /*                   _     _                                                   _     _
                         | |   | |                           ___                   | |   | |
@@ -175,19 +146,8 @@ public class Client implements Runnable
         return userName;
     }
 
-    public static void sendMessageToController( Message sendThisToController )
-    {
-        // make the date look pretty: 8:54:17 PM
-        date = getTimeInstance( MEDIUM ).format( new Date() );
-
-        print( "--sending message to controller" );
-        NinjaController.sendMessageToFXMLuserOutput( sendThisToController, date );
-        print( "--message sent to controller" );
-    }
-
     static void sendMessageToServer( Message messageToSend )
     {
-        sendMessageToController( "test1" ); // works
         try
         {
             if( ! ( messageToSend.getMsgBody().isEmpty() ) )
@@ -222,7 +182,7 @@ public class Client implements Runnable
         return new Message( NinjaController.retrieveTextFromFXMLuserInput(),
                 null,    // font entry
                 null,    // font entry
-                "bob" /*getUserName()*/ );
+                getName() );
     }
 
     // basic stdout print because System.out.println( "" )

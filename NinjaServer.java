@@ -19,7 +19,7 @@ import static javax.swing.JOptionPane.showInputDialog;
  *         Date: 11/30/13 Time: 2:30 AM
  */
 
-public class ChatServer extends JFrame
+public class NinjaServer extends JFrame
 {
     private static String port;
 
@@ -39,7 +39,7 @@ public class ChatServer extends JFrame
     // this variable will be used to make the date look pretty: 8:54:17 PM
     private static String date;
 
-    public ChatServer()
+    public NinjaServer()
     {
         log = new JTextArea( 5, 32 );
         add( new JScrollPane( log ) );
@@ -67,7 +67,7 @@ public class ChatServer extends JFrame
 
     public static void main( String[] args ) throws Exception
     {
-        new ChatServer();
+        new NinjaServer();
 
         System.out.println( "The chat server is running." );
 
@@ -117,7 +117,7 @@ public class ChatServer extends JFrame
         }
     }
 
-    private static class ClientHandle implements Runnable
+    private static class ClientHandle implements java.lang.Runnable
     {
         private String name;
         private Socket socket;
@@ -193,6 +193,7 @@ public class ChatServer extends JFrame
                     // this is the code that echos the Message object to all the clients
                     for( ObjectOutputStream writer : writers )
                     {
+                        pushThis( "message sent to " + writer + "\n" );
                         writer.writeObject( echoedMessage );
                         writer.flush();
                     }
@@ -202,7 +203,7 @@ public class ChatServer extends JFrame
             {
                 System.out.println( e );
             }
-            catch( ClassNotFoundException e )
+            catch( java.lang.ClassNotFoundException e )
             {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
