@@ -7,26 +7,28 @@ import java.util.Date;
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.getTimeInstance;
 
-public class Client
+public class Client implements Runnable
 {
     /*
         These are the user set preferences, the userName will be set by the user
         when the Client loads.
     */
     private static String userName = "default";  // this field will be changed when user is prompted for a name
-    private static int fontSize = 12;
-
 
     // Object IO streams
     private static ObjectOutputStream toServer;
     private        ObjectInputStream  fromServer;
+
+    Message receiveMessage;
 
     /*
     Plan to update the port selection to use a showInputDialog that will request a user
     specified port and url of the server to connect to.
     Like the other showInputDialogs, this will have a server address and port preset.
      */
+    String hostname = "localhost";
     private static final int port = 4000;
+    Socket socket;
 
     static String date;
     boolean connected;
@@ -35,6 +37,89 @@ public class Client
 
     Message wantToSend;
 
+    @Override
+    public void run()
+    {
+        try
+        {
+            socket = new Socket( hostname, port );
+        }
+        catch( IOException e )
+        {
+            e.printStackTrace();
+        }
+
+        // prompt the user for an alias using JOptionPane.showInputDialog
+        userName = "bob"; //getName(); // getName needs to be rewritten, it used the old JFrames approach, needs to use the new css approach
+
+        try
+        {
+            toServer   = new ObjectOutputStream( socket.getOutputStream() );
+        }
+        catch( IOException e )
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            fromServer = new ObjectInputStream(  socket.getInputStream() );
+        }
+        catch( IOException e )
+        {
+            e.printStackTrace();
+        }
+
+        // send the username to the server for "online list"
+        // ** feature is beta right now **
+        wantToSend = new Message( getName() );
+        try
+        {
+            toServer.writeObject( wantToSend );
+        }
+        catch( IOException e )
+        {
+            e.printStackTrace();
+        }
+
+        connected = true;
+
+        while( connected )
+        {
+            try
+            {
+                receiveMessage = ( Message ) fromServer.readObject();
+
+                if( receiveMessage != null )
+                {
+                    sendMessageToController( receiveMessage );
+                }
+                else
+                {
+                    sendMessageToController( ">>>  Message from server == null <<< BUGCODE1001" );
+                }
+            }
+            catch( ClassNotFoundException e1 )
+            {
+                e1.printStackTrace();
+            }
+            catch( IOException e )
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void sendMessageToController( String message )
+    {
+        // make the date look pretty: 8:54:17 PM
+        date = getTimeInstance( MEDIUM ).format( new Date() );
+
+        print( "--sending message to controller" );
+        NinjaController.sendMessageToFXMLuserOutput( message, date );
+        print( "--message sent to controller" );
+    }
+
+    /*
     public Client() throws IOException
     {
         String hostname = "localhost";
@@ -51,32 +136,8 @@ public class Client
         // ** feature is beta right now **
         wantToSend = new Message( getName() );
         toServer.writeObject( wantToSend );
-
-        Message receiveMessage;
-
-        connected = true;
-
-        while( connected )
-        {
-            try
-            {
-                receiveMessage = ( Message ) fromServer.readObject();
-
-                if( receiveMessage != null )
-                {
-                    sendMessageToController( receiveMessage );
-                }
-                else
-                {
-                    sendMessageToController( new Message( 1, ">>>  Message from server == null <<< BUGCODE1001" ) );
-                }
-            }
-            catch( ClassNotFoundException e1 )
-            {
-                e1.printStackTrace();
-            }
-        }
     }
+    */
 
     /*                   _     _                                                   _     _
                         | |   | |                           ___                   | |   | |
@@ -126,7 +187,7 @@ public class Client
 
     static void sendMessageToServer( Message messageToSend )
     {
-        sendMessageToController( new Message( 1, "test1") ); // works
+        sendMessageToController( "test1" ); // works
         try
         {
             if( ! ( messageToSend.getMsgBody().isEmpty() ) )

@@ -13,9 +13,7 @@ import java.io.IOException;
  */
 public class Main extends Application
 {
-    private Stage      primaryStage;
     private BorderPane rootLayout;
-
 
     /**
      * this code creates a borderpane with a menubar at the top, the purpose is of
@@ -24,16 +22,14 @@ public class Main extends Application
     @Override
     public void start( Stage primaryStage )
     {
-        this.primaryStage = primaryStage;
-        this.primaryStage.setTitle( "chatninjas client" );
-
         try
         {
             // load the menubar layout from the fxml file
-            FXMLLoader loader = new FXMLLoader( Client.class.getResource( "ninjamenu.fxml" ) );
+            FXMLLoader loader = new FXMLLoader( getClass().getResource( "ninjamenu.fxml" ) );
             rootLayout = ( BorderPane ) loader.load();
             Scene scene = new Scene( rootLayout );
             primaryStage.setScene( scene );
+            primaryStage.setTitle( "chatninjas client" );
             primaryStage.show();
         }
         catch( Exception ex )
@@ -54,7 +50,7 @@ public class Main extends Application
         try
         {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader( Client.class.getResource( "ninja.fxml" ) );
+            FXMLLoader loader = new FXMLLoader( getClass().getResource( "ninja.fxml" ) );
             AnchorPane overviewPage = ( AnchorPane ) loader.load();
             rootLayout.setCenter( overviewPage );
         }
@@ -63,16 +59,6 @@ public class Main extends Application
             // Exception gets thrown if the fxml file could not be loaded
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Returns the main stage.
-     *
-     * @return
-     */
-    public Stage getPrimaryStage()
-    {
-        return primaryStage;
     }
 
     public static void main( String[] args )

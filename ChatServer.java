@@ -14,6 +14,11 @@ import static java.text.DateFormat.getTimeInstance;
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 import static javax.swing.JOptionPane.showInputDialog;
 
+/**
+ * @author Sergey Volkov
+ *         Date: 11/30/13 Time: 2:30 AM
+ */
+
 public class ChatServer extends JFrame
 {
     private static String port;
@@ -101,7 +106,7 @@ public class ChatServer extends JFrame
 
                 pushThis( "Starting thread for client " + clientNo );
 
-                new Thread( task ).start();
+                new java.lang.Thread( task ).start();
 
                 clientNo++;
             }

@@ -21,16 +21,16 @@ public class NinjaController implements Initializable
     private Button sendButton;
 
     @FXML
-    ResourceBundle resources = null;
+    ResourceBundle resources;
 
     @FXML
-    URL location = null;
+    URL location;
 
     @Override
     public void initialize( URL fxmlFileLocation, ResourceBundle resources )
     {
         this.resources = resources;
-        this.location = fxmlFileLocation;
+        this.location  = fxmlFileLocation;
 
         System.out.println( "about to show the resources var: " + resources );
         System.out.println( "about to show the fxmlFileLocation var: " + fxmlFileLocation );
@@ -52,6 +52,9 @@ public class NinjaController implements Initializable
                 consolidatedSendMessagePrompt();
             }
         } );
+
+        Client task = new Client();
+        new Thread(task).start();
     }
 
     // returns a String trimmed of spaces
@@ -68,6 +71,11 @@ public class NinjaController implements Initializable
                              + incomingMessage.getMsgBody() + "\n" );
     }
 
+    public static void sendMessageToFXMLuserOutput( String message, String date )
+    {
+        userOutput.appendText( date + " [special message]: " + message );
+    }
+
     private void consolidatedSendMessagePrompt()
     {
         Client.sendMessageToServer( Client.constructMessageFromFXMLuserInput() );
@@ -75,4 +83,6 @@ public class NinjaController implements Initializable
 
         System.out.println( "send via enter key" );
     }
+
+
 }
