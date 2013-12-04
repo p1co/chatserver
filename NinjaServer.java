@@ -8,7 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import static java.text.DateFormat.MEDIUM;
@@ -21,19 +20,17 @@ import static javax.swing.JOptionPane.showInputDialog;
  *         Date: 11/30/13 Time: 2:30 AM
  */
 
+// TODO: add a way to nicely shutdown the server, such as intercepting the CLOSE_ON_EXIT event
+
 public class NinjaServer extends JFrame
 {
     private static String port;
 
-    // this hash will keep a list of users, the .LIST command will
-    // access the list
-    private static HashSet<String> onlineList = new HashSet<String>();
-
-    private static HashMap<String, ObjectOutputStream> connectedMap = new HashMap<String, ObjectOutputStream>();
-
+    // key:   String,
+    // value: objectoutputstream
     // this hash will keep a list of objectoutputstream objects for each
     // user, purpose for this is to send a message to every connected client (echo)
-    private static HashSet<ObjectOutputStream> writers = new HashSet<ObjectOutputStream>();
+    private static HashMap<String, ObjectOutputStream> connectedMap = new HashMap<String, ObjectOutputStream>();
 
     private static JTextArea log;
 
@@ -61,7 +58,7 @@ public class NinjaServer extends JFrame
                 PLAIN_MESSAGE,
                 null,
                 null,
-                4000 );
+                4000 );    // default port: 4000
 
         setTitle( "ChatNinjas server log" );
         setSize( 394, 200 );
@@ -104,13 +101,14 @@ public class NinjaServer extends JFrame
 
                 pushThis( "Starting thread for client " + clientNo );
 
-                new java.lang.Thread( task ).start();
+                new Thread( task ).start();
 
                 clientNo++;
             }
         }
         finally
         {
+            pushThis( "Server shutting down." );
             listener.close();
         }
     }
@@ -126,7 +124,7 @@ public class NinjaServer extends JFrame
         private static String  userName      = "server's default username";
 
         private static boolean isRunning = true;
-        private static int clientNo;
+        private int clientNo;
 
         public ClientHandle( Socket socket, int clientNo )
         {
@@ -138,23 +136,28 @@ public class NinjaServer extends JFrame
         {
             try
             {
-                // Create character streams for the socket.
                 inputFromClient = new ObjectInputStream( socket.getInputStream() );
-                outputToClient = new ObjectOutputStream( socket.getOutputStream() );
+                outputToClient  = new ObjectOutputStream( socket.getOutputStream() );
 
-                // this section gets the username from the client, and adds the username
-                // to the online list hash of users connected
+                // this section gets the username from the client
                 userName = ( String ) inputFromClient.readObject();
 
                 pushThis( "Adding outputToClient to the writers hashset for client " + clientNo + "." );
 
+                // inserts the username as a key, and outputtoclient as a value
+                // into the connected Map hashmap, this replaced older approach
+                // I used where there were two hashsets, one for each
                 connectedMap.put( userName, outputToClient );
 
                 pushThis( userName + " has connected to the server." );
 
                 // 1 means the user is entering
+                // sends a message object to all connected clients so they can update
+                // their onlineLists.
+                // ** need to redo this approach so the clients query the server
+                // ** every couple seconds, since newly connected clients do not
+                // ** update the already connected users
                 updateClientsOnlineList( 1, userName );
-
 
                 pushThis( "begin while loop" );
                 while( true )
@@ -203,15 +206,13 @@ public class NinjaServer extends JFrame
             // 2 indicates user is leaving
             updateClientsOnlineList( 2, userName );
 
+            // iterates though the hashmap, if the map is not empty, remove
+            // username (removing the key also removes the value attached to it
             if( connectedMap.isEmpty() != true )
             {
                 pushThis( "Removing " + userName + "from server's online list." );
                 connectedMap.remove( userName );
-                // inputFromClient.close();
             }
-
-            // this removes the username from the online list
-            isRunning = false;
         }
 
         // so far this command shows online list to server log
