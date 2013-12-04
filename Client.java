@@ -36,10 +36,6 @@ public class Client implements Runnable
     static String date;
     boolean connected = true;
 
-    // static Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
-
-    Message wantToSend;
-
     @Override
     public void run()
     {
@@ -124,21 +120,6 @@ public class Client implements Runnable
         print( "client completed disconnected" );
     }
 
-    /*                   _     _                                                   _     _
-                        | |   | |                           ___                   | |   | |
-           __ _    ___  | |_  | |_    ___   _ __   ___     ( _ )      ___    ___  | |_  | |_    ___   _ __   ___
-          / _` |  / _ \ | __| | __|  / _ \ | '__| / __|    / _ \/\   / __|  / _ \ | __| | __|  / _ \ | '__| / __|
-         | (_| | |  __/ | |_  | |_  |  __/ | |    \__ \   | (_>  <   \__ \ |  __/ | |_  | |_  |  __/ | |    \__ \
-          \__, |  \___|  \__|  \__|  \___| |_|    |___/    \___/\/   |___/  \___|  \__|  \__|  \___| |_|    |___/
-           __/ |
-          |___/
-    */
-
-    /**
-     * Prompt for and return the desired screen name.
-     */
-
-
     // need to update this code with nicole's login screen functionality
     /*
     public String getName()
@@ -189,7 +170,6 @@ public class Client implements Runnable
         {
             System.err.println( ex );
         }
-
     }
 
     public static Message constructMessageFromFXMLuserInput()
