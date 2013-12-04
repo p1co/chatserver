@@ -3,6 +3,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+// TODO test
+
 public class Client implements Runnable
 {
     /*

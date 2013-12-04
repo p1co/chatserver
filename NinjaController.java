@@ -33,6 +33,7 @@ public class NinjaController implements Initializable
     @FXML
     URL location;
 
+    // date stuff
     static String date;
 
     @Override
