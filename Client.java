@@ -20,7 +20,7 @@ public class Client implements Runnable
     private static ObjectOutputStream toServer;
     private        ObjectInputStream  fromServer;
 
-    private static HashSet<String> onlineList = new HashSet<String>();
+    protected static HashSet<String> onlineList = new HashSet<String>();
 
     Message receiveMessage;
 
@@ -90,9 +90,18 @@ public class Client implements Runnable
                 if( receiveMessage != null )
                 {
                     if( receiveMessage.getComeOrGo() == 1 )
+                    {
                         onlineList.add( receiveMessage.getMsgBody() );
+                        print( "added user " + receiveMessage.getMsgBody() );
+                        updateOnlineList();
+                    }
+
                     else if( receiveMessage.getComeOrGo() == 2 )
+                    {
                         onlineList.remove( receiveMessage.getMsgBody() );
+                        print( "removed user " + receiveMessage.getMsgBody() );
+                        updateOnlineList();
+                    }
                     else
                         NinjaController.sendMessageToFXMLuserOutput( receiveMessage, date );
                 }
@@ -149,6 +158,14 @@ public class Client implements Runnable
     public static String getName()
     {
         return userName;
+    }
+
+    private void updateOnlineList()
+    {
+        NinjaController.onlineList.setText( "" );
+
+        for( String userTemp: onlineList )
+            NinjaController.guiOnlineListUpdate( userTemp );
     }
 
     static void sendMessageToServer( Message messageToSend )

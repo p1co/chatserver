@@ -17,6 +17,9 @@ public class NinjaController implements Initializable
     @FXML //  fx:id="userInput"
     private static TextField userInput;
 
+    @FXML //  fx:id="onlineList"
+    protected static TextArea onlineList;
+
     @FXML //  fx:id="sendButton"
     private Button sendButton;
 
@@ -30,7 +33,7 @@ public class NinjaController implements Initializable
     public void initialize( URL fxmlFileLocation, ResourceBundle resources )
     {
         this.resources = resources;
-        this.location  = fxmlFileLocation;
+        this.location = fxmlFileLocation;
 
         System.out.println( "about to show the resources var: " + resources );
         System.out.println( "about to show the fxmlFileLocation var: " + fxmlFileLocation );
@@ -76,6 +79,11 @@ public class NinjaController implements Initializable
     public static void sendMessageToFXMLuserOutput( String message, String date )
     {
         userOutput.appendText( date + " [special message]: " + message + "\n");
+    }
+
+    public static void guiOnlineListUpdate( String userName )
+    {
+        onlineList.appendText( userName + "\n" );
     }
 
     private void consolidatedSendMessagePrompt()

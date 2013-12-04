@@ -103,16 +103,6 @@ class Message implements Serializable
         return fromUserName;
     }
 
-    Color getFontColour()
-    {
-        return fontColour;
-    }
-
-    Font getMyFont()
-    {
-        return myFont;
-    }
-
     @Override
     public String toString()
     {

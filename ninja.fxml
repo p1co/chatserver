@@ -8,12 +8,12 @@
   <children>
     <GridPane alignment="TOP_LEFT" disable="false" gridLinesVisible="true" hgap="0.0" prefHeight="294.999977929685" prefWidth="487.999977929685" vgap="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-        <AnchorPane fx:id="Lanchor" prefHeight="261.0" prefWidth="487.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+        <AnchorPane  prefHeight="261.0" prefWidth="487.0" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
           <children>
             <TextArea fx:id="userOutput" editable="false" prefHeight="261.0" prefWidth="488.0" promptText="" wrapText="true" AnchorPane.bottomAnchor="97.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
         </AnchorPane>
-        <AnchorPane fx:id="Ranchor" maxWidth="-Infinity" minHeight="-1.0" minWidth="-Infinity" prefHeight="383.0" prefWidth="97.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+        <AnchorPane  maxWidth="-Infinity" minHeight="-1.0" minWidth="-Infinity" prefHeight="383.0" prefWidth="97.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
           <children>
             <TextArea fx:id="onlineList" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="261.0" prefWidth="97.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
           </children>
