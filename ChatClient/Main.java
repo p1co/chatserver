@@ -42,7 +42,6 @@ public class Main extends Application
                 @Override public void handle(WindowEvent t) {
                     System.out.println("CLOSING");
                     Client.sendMessageToServer( new Message( ".LEAVE" ) );
-                    Client.onlineList.remove( Client.getName() );
                 }
             });
 
