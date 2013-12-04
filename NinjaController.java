@@ -69,8 +69,8 @@ public class NinjaController implements Initializable
     public static void sendMessageToFXMLuserOutput( Message incomingMessage, String date )
     {
         userOutput.appendText( date + " ["
-                             + incomingMessage.getUserName() + "]: "
-                             + incomingMessage.getMsgBody() + "\n" );
+                + incomingMessage.getUserName() + "]: "
+                + incomingMessage.getMsgBody() + "\n" );
     }
 
     public static void sendMessageToFXMLuserOutput( String message, String date )

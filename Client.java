@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Date;
+import java.util.HashSet;
 
 import static java.text.DateFormat.MEDIUM;
 import static java.text.DateFormat.getTimeInstance;
@@ -13,11 +14,13 @@ public class Client implements Runnable
         These are the user set preferences, the userName will be set by the user
         when the Client loads.
     */
-    private static String userName = "default";  // this field will be changed when user is prompted for a name
+    private static String userName = "" + ( int ) ( 0 + ( Math.random() * ( 255 - 0 ) ) ) * 10;  // this field will be changed when user is prompted for a name
 
     // Object IO streams
     private static ObjectOutputStream toServer;
     private        ObjectInputStream  fromServer;
+
+    private static HashSet<String> onlineList = new HashSet<String>();
 
     Message receiveMessage;
 
@@ -31,7 +34,7 @@ public class Client implements Runnable
     Socket socket;
 
     static String date;
-    boolean connected;
+    boolean connected = true;
 
     // static Font myFont = new Font( fontType, Font.BOLD, fontSize ); // testing the font functionality // works!
 
@@ -49,12 +52,9 @@ public class Client implements Runnable
             e.printStackTrace();
         }
 
-        // prompt the user for an alias using JOptionPane.showInputDialog
-        userName = "" + (int)(0 + (Math.random() * (255 - 0)))*10; //getName(); // getName needs to be rewritten, it used the old JFrames approach, needs to use the new css approach
-
         try
         {
-            toServer   = new ObjectOutputStream( socket.getOutputStream() );
+            toServer = new ObjectOutputStream( socket.getOutputStream() );
         }
         catch( IOException e )
         {
@@ -70,19 +70,16 @@ public class Client implements Runnable
         }
 
         // send the username to the server for "online list"
-        // ** feature is beta right now **
-        wantToSend = new Message( getName() );
         try
         {
-            toServer.writeObject( wantToSend );
+            toServer.writeObject( userName );
         }
         catch( IOException e )
         {
             e.printStackTrace();
         }
 
-        connected = true;
-
+        //while( !Thread.interrupted() )
         while( connected )
         {
             date = getTimeInstance( MEDIUM ).format( new Date() );
@@ -92,7 +89,12 @@ public class Client implements Runnable
 
                 if( receiveMessage != null )
                 {
-                    NinjaController.sendMessageToFXMLuserOutput( receiveMessage, date );
+                    if( receiveMessage.getComeOrGo() == 1 )
+                        onlineList.add( receiveMessage.getMsgBody() );
+                    else if( receiveMessage.getComeOrGo() == 2 )
+                        onlineList.remove( receiveMessage.getMsgBody() );
+                    else
+                        NinjaController.sendMessageToFXMLuserOutput( receiveMessage, date );
                 }
                 else
                 {
@@ -105,9 +107,12 @@ public class Client implements Runnable
             }
             catch( IOException e )
             {
-                e.printStackTrace();
+                print( "NOT CONNECTED ANY MORE" );
+                connected = false;
             }
         }
+
+        print( "client completed disconnected" );
     }
 
     /*                   _     _                                                   _     _

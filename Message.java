@@ -13,6 +13,7 @@ class Message implements Serializable
     private Color  fontColour;
     private String fromUserName = "default";
     private String toUserName = "default";
+    private int    comeOrGo;
 
     /*                             _                           _
                                   | |                         | |
@@ -30,9 +31,9 @@ class Message implements Serializable
     this constructor is used to send the initial
     username to the server for the online list
      */
-    Message( String userName )
+    Message( String msgBody )
     {
-        this.fromUserName = userName;
+        this.msgBody = msgBody;
     }
 
     /*
@@ -42,6 +43,12 @@ class Message implements Serializable
     Message( String userName, String allOfThisTest )
     {
         this.msgBody = userName + " " + allOfThisTest;
+    }
+
+    Message( int comeOrGo, String userName )
+    {
+        this.msgBody = userName;
+        this.comeOrGo = comeOrGo;
     }
 
     /*
@@ -84,6 +91,11 @@ class Message implements Serializable
     public String getMsgBody()
     {
         return msgBody;
+    }
+
+    public int getComeOrGo()
+    {
+        return comeOrGo;
     }
 
     String getUserName()
