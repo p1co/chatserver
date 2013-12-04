@@ -1,3 +1,5 @@
+package ChatClient;
+
 import java.awt.*;
 import java.io.Serializable;
 

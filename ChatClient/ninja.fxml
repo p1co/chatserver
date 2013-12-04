@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="357.999977929685" prefWidth="584.999977929685" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="NinjaController">
+<AnchorPane prefHeight="357.999977929685" prefWidth="584.999977929685" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ChatClient.NinjaController">
   <children>
     <GridPane alignment="TOP_LEFT" disable="false" gridLinesVisible="true" hgap="0.0" prefHeight="294.999977929685" prefWidth="487.999977929685" vgap="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
