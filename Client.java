@@ -2,11 +2,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Date;
-import java.util.HashSet;
-
-import static java.text.DateFormat.MEDIUM;
-import static java.text.DateFormat.getTimeInstance;
 
 public class Client implements Runnable
 {
@@ -20,8 +15,6 @@ public class Client implements Runnable
     private static ObjectOutputStream toServer;
     private        ObjectInputStream  fromServer;
 
-    protected static HashSet<String> onlineList = new HashSet<String>();
-
     Message receiveMessage;
 
     /*
@@ -33,7 +26,6 @@ public class Client implements Runnable
     private static final int port = 4000;
     Socket socket;
 
-    static String date;
     boolean connected = true;
 
     @Override
@@ -78,7 +70,6 @@ public class Client implements Runnable
         //while( !Thread.interrupted() )
         while( connected )
         {
-            date = getTimeInstance( MEDIUM ).format( new Date() );
             try
             {
                 receiveMessage = ( Message ) fromServer.readObject();
@@ -86,24 +77,17 @@ public class Client implements Runnable
                 if( receiveMessage != null )
                 {
                     if( receiveMessage.getComeOrGo() == 1 )
-                    {
-                        onlineList.add( receiveMessage.getMsgBody() );
                         print( "added user " + receiveMessage.getMsgBody() );
-                        updateOnlineList();
-                    }
-
                     else if( receiveMessage.getComeOrGo() == 2 )
-                    {
-                        onlineList.remove( receiveMessage.getMsgBody() );
                         print( "removed user " + receiveMessage.getMsgBody() );
-                        updateOnlineList();
-                    }
+                    else if( receiveMessage.getComeOrGo() == 3 )
+                        NinjaController.guiOnlineListUpdate( receiveMessage.getMsgBody() );
                     else
-                        NinjaController.sendMessageToFXMLuserOutput( receiveMessage, date );
+                        NinjaController.sendMessageToFXMLuserOutput( receiveMessage );
                 }
                 else
                 {
-                    NinjaController.sendMessageToFXMLuserOutput( ">>>  Message from server == null <<< BUGCODE1001", date );
+                    NinjaController.sendMessageToFXMLuserOutput( ">>>  Message from server == null <<< BUGCODE1001" );
                 }
             }
             catch( ClassNotFoundException e1 )
@@ -139,14 +123,6 @@ public class Client implements Runnable
     public static String getName()
     {
         return userName;
-    }
-
-    private void updateOnlineList()
-    {
-        NinjaController.onlineList.setText( "" );
-
-        for( String userTemp: onlineList )
-            NinjaController.guiOnlineListUpdate( userTemp );
     }
 
     static void sendMessageToServer( Message messageToSend )

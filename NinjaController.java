@@ -7,7 +7,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
+
+import static java.text.DateFormat.MEDIUM;
+import static java.text.DateFormat.getTimeInstance;
 
 public class NinjaController implements Initializable
 {
@@ -28,6 +32,8 @@ public class NinjaController implements Initializable
 
     @FXML
     URL location;
+
+    static String date;
 
     @Override
     public void initialize( URL fxmlFileLocation, ResourceBundle resources )
@@ -69,15 +75,17 @@ public class NinjaController implements Initializable
     }
 
     // appends the incoming text area (userOut) with an inbound message
-    public static void sendMessageToFXMLuserOutput( Message incomingMessage, String date )
+    public static void sendMessageToFXMLuserOutput( Message incomingMessage )
     {
+        date = getTimeInstance( MEDIUM ).format( new Date() );
         userOutput.appendText( date + " ["
                 + incomingMessage.getUserName() + "]: "
                 + incomingMessage.getMsgBody() + "\n" );
     }
 
-    public static void sendMessageToFXMLuserOutput( String message, String date )
+    public static void sendMessageToFXMLuserOutput( String message )
     {
+        date = getTimeInstance( MEDIUM ).format( new Date() );
         userOutput.appendText( date + " [special message]: " + message + "\n");
     }
 
