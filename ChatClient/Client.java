@@ -13,11 +13,11 @@ public class Client implements Runnable
         These are the user set preferences, the userName will be set by the user
         when the Client loads.
     */
-    private static String userName = "" + ( int ) ( 0 + ( Math.random() * ( 255 - 0 ) ) ) * 10;  // this field will be changed when user is prompted for a name
+    private static String userName = "default" + ( int ) ( 0 + ( Math.random() * ( 255 - 0 ) ) ) * 10;  // this field will be changed when user is prompted for a name
 
     // Object IO streams
-    private static ObjectOutputStream toServer;
-    private        ObjectInputStream  fromServer;
+    protected static ObjectOutputStream toServer;
+    private          ObjectInputStream  fromServer;
 
     Message receiveMessage;
 
@@ -28,7 +28,7 @@ public class Client implements Runnable
      */
     String hostname = "localhost";
     private static final int port = 4000;
-    Socket socket;
+    static Socket socket;
 
     boolean connected = true;
 
@@ -41,7 +41,10 @@ public class Client implements Runnable
         }
         catch( IOException e )
         {
-            e.printStackTrace();
+            print( "Could not connect to server: " + e );
+            NinjaController.sendPop( "test" );
+            Thread.currentThread().interrupt();
+            return;
         }
 
         try
@@ -124,9 +127,14 @@ public class Client implements Runnable
                 "moose" + ( int ) ( Math.random() * ( 9999 - 1111 ) ) );
     }
     */
-    public static String getName()
+    public static String getUserName()
     {
         return userName;
+    }
+
+    protected static void setUserName( String incomingUserName )
+    {
+        userName = incomingUserName;
     }
 
     static void sendMessageToServer( Message messageToSend )
@@ -164,7 +172,7 @@ public class Client implements Runnable
         return new Message( NinjaController.retrieveTextFromFXMLuserInput(),
                 null,    // font entry
                 null,    // font entry
-                getName() );
+                getUserName() );
     }
 
     // basic stdout print because System.out.println( "" )

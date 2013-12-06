@@ -38,15 +38,6 @@ class Message implements Serializable
         this.msgBody = msgBody;
     }
 
-    /*
-    this constructor is used by the server to let the
-    whole room know a client has disconnected
-     */
-    Message( String userName, String allOfThisTest )
-    {
-        this.msgBody = userName + " " + allOfThisTest;
-    }
-
     Message( int comeOrGo, String userName )
     {
         this.msgBody = userName;

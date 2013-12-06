@@ -171,13 +171,15 @@ public class NinjaServer extends JFrame
 
                     // display onlineList
                     if( echoedMessage.getMsgBody().matches( ".LIST" ) )
-                        pushOnlineListToClients( echoedMessage );
+                        pushOnlineListToClients();
 
                         // request to quit chat
                     else if( echoedMessage.getMsgBody().matches( ".LEAVE" ) )
                         kickUserOff( echoedMessage );
                     else if( echoedMessage.getMsgBody().matches( ".ONLINELIST" ) )
                         sendOnlineList();
+                    else if( echoedMessage.getMsgBody().matches( ".CONNECTIONTEST" ))
+                        continue;
                     else
                         sendToAllConnected( echoedMessage );
                 }
@@ -234,19 +236,21 @@ public class NinjaServer extends JFrame
         }
 
         // so far this command shows online list to server log
-        private static void pushOnlineListToClients( Message pushOnlineListToClients )
+        private void pushOnlineListToClients() throws IOException
         {
-            pushThis( "Userlist request made by " + pushOnlineListToClients.getUserName() );
-            log.append( "List of users online: " );
-
             Iterator<String> keySetIterator = connectedMap.keySet().iterator();
 
-            pushThis( "Online list: " );
+            StringBuilder onlineListToClients = new StringBuilder( clientNo );
+
             while( keySetIterator.hasNext() )
             {
                 String key = keySetIterator.next();
-                pushThis( key );
+                onlineListToClients.append( key + "\n" );
             }
+
+            String x = new String( onlineListToClients );
+
+            sendToAllConnected( new Message( 3, x ) );
 
             log.setCaretPosition( log.getDocument().getLength() );
         }

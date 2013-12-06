@@ -33,15 +33,25 @@ public class Main extends Application
         try
         {
             // load the menubar layout from the fxml file
-            FXMLLoader loader = new FXMLLoader( getClass().getResource( "ChatClient/ninjamenu.fxml" ) );
+            FXMLLoader loader = new FXMLLoader( getClass().getResource( "ninjamenu.fxml" ) );
             rootLayout = ( BorderPane ) loader.load();
+            NinjaController controller = (NinjaController)loader.getController();
+
+            //controller.setStageAndSetupListeners(stage); // or what you want to do
+
             Scene scene = new Scene( rootLayout );
             primaryStage.setScene( scene );
 
             primaryStage.setOnCloseRequest( new EventHandler<WindowEvent>() {
                 @Override public void handle(WindowEvent t) {
                     System.out.println("CLOSING");
-                    Client.sendMessageToServer( new Message( ".LEAVE" ) );
+
+                    // this check is to see if there exists a connection
+                    // if no connection, then don't send the .LEAVE command
+                    // if a connection exists, the .LEAVE command
+                    // is intended to update the onlineList
+                    if( !(Client.toServer == null) )
+                        Client.sendMessageToServer( new Message( ".LEAVE" ) );
                 }
             });
 
@@ -57,7 +67,7 @@ public class Main extends Application
         showChatRoom();
     }
 
-
+    static NinjaController controller;
     /**
      * Shows the chat room area that will be nested into the centre of the borderpane above
      */
@@ -66,8 +76,11 @@ public class Main extends Application
         try
         {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader( getClass().getResource( "ChatClient/ninja.fxml" ) );
+            FXMLLoader loader = new FXMLLoader( getClass().getResource( "ninja.fxml" ) );
             AnchorPane overviewPage = ( AnchorPane ) loader.load();
+
+            NinjaController controller = loader.getController();
+
             rootLayout.setCenter( overviewPage );
         }
         catch( IOException e )
