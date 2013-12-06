@@ -42,7 +42,6 @@ public class Client implements Runnable
         catch( IOException e )
         {
             print( "Could not connect to server: " + e );
-            NinjaController.sendPop( "test" );
             Thread.currentThread().interrupt();
             return;
         }

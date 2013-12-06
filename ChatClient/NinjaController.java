@@ -78,9 +78,6 @@ public class NinjaController implements Initializable
 
         Client task = new Client();
         new Thread(task).start();
-
-        if( Client.toServer == null )
-            System.out.println( "tttessssssssssssssssssssssssTTTTTTTTTTTTTTTTTT" );
     }
 
     // returns a String trimmed of spaces
@@ -119,11 +116,7 @@ public class NinjaController implements Initializable
 
     static Stage dialogStage;
 
-    static void sendPop( String mess )
-    {
-        popupText( mess );
-    }
-
+    // incase we ever need to display a popup dialog
     static void popupText( String popupMessage )
     {
         Button but = new Button( "Close" );
@@ -135,10 +128,6 @@ public class NinjaController implements Initializable
                 dialogStage.hide();
             }
         } );
-
-
-
-
 
         dialogStage = new Stage();
         dialogStage.initModality( Modality.WINDOW_MODAL );
@@ -158,8 +147,9 @@ public class NinjaController implements Initializable
             @Override
             public void handle( ActionEvent actionEvent )
             {
-                thisUserName = new String( userNameField.getText() );
+                Client.setUserName( userNameField.getText().trim() );
                 userNameField.setText( "" );
+                dialogStage.close();
             }
         } );
 
@@ -175,5 +165,4 @@ public class NinjaController implements Initializable
 
         return thisUserName;
     }
-
 }

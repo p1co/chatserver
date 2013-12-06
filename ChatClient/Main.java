@@ -11,10 +11,6 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
-
-// TODO test 3
-
-
 /**
  * @author Sergey
  *         Date: 11/22/13 Time: 9:10 PM
@@ -35,10 +31,6 @@ public class Main extends Application
             // load the menubar layout from the fxml file
             FXMLLoader loader = new FXMLLoader( getClass().getResource( "ninjamenu.fxml" ) );
             rootLayout = ( BorderPane ) loader.load();
-            NinjaController controller = (NinjaController)loader.getController();
-
-            //controller.setStageAndSetupListeners(stage); // or what you want to do
-
             Scene scene = new Scene( rootLayout );
             primaryStage.setScene( scene );
 
@@ -78,9 +70,6 @@ public class Main extends Application
             // Load the fxml file and set into the center of the main layout
             FXMLLoader loader = new FXMLLoader( getClass().getResource( "ninja.fxml" ) );
             AnchorPane overviewPage = ( AnchorPane ) loader.load();
-
-            NinjaController controller = loader.getController();
-
             rootLayout.setCenter( overviewPage );
         }
         catch( IOException e )
