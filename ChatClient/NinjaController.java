@@ -163,6 +163,8 @@ public class NinjaController implements Initializable
             }
         } );
 
+        // ignore this comment
+
         dialogStage = new Stage();
         dialogStage.initModality( Modality.WINDOW_MODAL );
         dialogStage.setScene( new Scene( VBoxBuilder.create().children(
